@@ -1,12 +1,28 @@
 Submodule DanaKit contains modified content
+diff --git a/DanaKit/DanaKit/PumpManager/BluetoothManager.swift b/DanaKit/DanaKit/PumpManager/BluetoothManager.swift
+index caa4edd..50dd425 100644
+--- a/DanaKit/DanaKit/PumpManager/BluetoothManager.swift
++++ b/DanaKit/DanaKit/PumpManager/BluetoothManager.swift
+@@ -148,7 +148,9 @@ extension BluetoothManager {
+                 self.log.error("Failed to connect: Timeout reached...")
+                 
+                 connectionCallback(.failure)
+-                self.connectionCallback[identifier] = nil
++                if self.connectionCallback[identifier] != nil {
++                    self.connectionCallback[identifier] = nil
++                }
+             } catch{}
+         }
+     }
 diff --git a/DanaKit/DanaKit/PumpManager/DanaKitPumpManager.swift b/DanaKit/DanaKit/PumpManager/DanaKitPumpManager.swift
-index d795d59..88ca56b 100644
+index d795d59..b0fc750 100644
 --- a/DanaKit/DanaKit/PumpManager/DanaKitPumpManager.swift
 +++ b/DanaKit/DanaKit/PumpManager/DanaKitPumpManager.swift
-@@ -556,18 +556,6 @@ extension DanaKitPumpManager: PumpManager {
+@@ -555,19 +555,7 @@ extension DanaKitPumpManager: PumpManager {
+                         self.doseReporter = DanaKitDoseProgressReporter(total: units)
                          self.state.bolusState = .inProgress
                          self.notifyStateDidChange()
-                         
+-                        
 -                        DispatchQueue.main.async {
 -                            let dose = self.doseEntry?.toDoseEntry(isMutable: true)
 -                            
@@ -19,6 +35,7 @@ index d795d59..88ca56b 100644
 -                            }
 -                        }
 -                        
++
                          completion(nil)
                      } catch {
                          self.state.bolusState = .noBolus
